@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antunes | Arquitetura Jurídica</title>
+    
+    <!-- Google Fonts: Tipografia Grotesk Moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0B1120',      /* Azul Marinho Profundo */
+                            slate: '#151F32',     /* Azul Ardósia Escuro */
+                            light: '#F8FAFC',     /* Branco Gelo levemente azulado */
+                            accent: '#1E3A8A',    /* Azul Royal Sóbrio */
+                            'accent-dark': '#172554', /* Azul Noturno */
+                        }
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Estilos Personalizados para Animações e Estrutura -->
+    <style>
+        /* Tipografia de Impacto */
+        .text-huge {
+            font-size: clamp(3rem, 8vw, 8rem);
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+        }
+
+        /* Animações de Scroll */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hover nas Linhas de Serviços (Estilo Acordeão/Lista Moderna) */
+        .service-row {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0B1120;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+        .service-row:hover::before {
+            transform: translateY(0);
+        }
+        .service-row:hover {
+            color: #F8FAFC;
+        }
+        .service-row:hover .service-icon {
+            color: #1E3A8A; /* Azul Royal */
+            transform: rotate(45deg);
+        }
+        .service-icon {
+            transition: all 0.4s ease;
+        }
+
+        /* Botão Magnético/Brutalista Monocromático */
+        .btn-brutal {
+            position: relative;
+            background: #0B1120;
+            color: #F8FAFC;
+            overflow: hidden;
+            transition: color 0.3s ease;
+        }
+        .btn-brutal::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background-color: #1E3A8A; /* Azul Royal no hover */
+            transition: height 0.3s ease;
+            z-index: 0;
+        }
+        .btn-brutal:hover::after {
+            height: 100%;
+        }
+        .btn-brutal span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Botão Invertido (Para secções escuras) */
+        .btn-brutal-invert {
+            position: relative;
+            background: #F8FAFC;
+            color: #0B1120;
+            overflow: hidden;
+            transition: color 0.3s ease;
+        }
+        .btn-brutal-invert::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background-color: #E2E8F0; /* Slate 200 no hover */
+            transition: height 0.3s ease;
+            z-index: 0;
+        }
+        .btn-brutal-invert:hover::after {
+            height: 100%;
+        }
+        .btn-brutal-invert span, .btn-brutal-invert i {
+            position: relative;
+            z-index: 1;
+        }
+
+        ::selection {
+            background-color: #1E3A8A;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark font-sans antialiased overflow-x-hidden selection:bg-brand-accent selection:text-white">
+
+    <!-- Navegação Arquitetónica -->
+    <nav class="fixed w-full z-50 top-0 bg-brand-light/95 backdrop-blur-sm border-b border-black/10 transition-all py-6" id="navbar">
+        <div class="px-6 md:px-12 flex justify-between items-center w-full">
+            <div class="font-extrabold text-2xl tracking-tighter uppercase flex items-center gap-2">
+                <div class="w-3 h-3 bg-brand-dark"></div>
+                ANTUNES
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-bold tracking-tight uppercase">
+                <a href="#expertise" class="hover:text-brand-accent transition-colors">Especialidades</a>
+                <a href="#reputation" class="hover:text-brand-accent transition-colors">Autoridade</a>
+            </div>
+            <div>
+                <a href="https://wa.me/5511965880608?text=Desejo agendar uma sessão estratégica." target="_blank" class="text-sm font-bold tracking-tight uppercase border-b-2 border-brand-dark hover:border-brand-accent hover:text-brand-accent transition-colors pb-1">
+                    Sessão Estratégica
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section: Impacto e Tipografia Sóbria -->
+    <section class="min-h-screen pt-32 pb-10 flex flex-col justify-center px-6 md:px-12 relative">
+        <div class="w-full max-w-[1400px] mx-auto z-10">
+            <div class="reveal-up">
+                <p class="text-brand-accent-dark font-bold tracking-[0.2em] uppercase text-sm mb-6 flex items-center gap-3">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-brand-accent"></i>
+                    Direito Estratégico & Corporativo
+                </p>
+                <h1 class="text-huge font-extrabold uppercase mb-8">
+                    Rigor.<br>
+                    Estratégia.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent-dark to-blue-500">Excelência.</span>
+                </h1>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 mt-12 items-end reveal-up delay-100">
+                <p class="text-lg md:text-xl font-medium text-gray-600 max-w-lg leading-relaxed">
+                    Arquitetura jurídica de alto nível. Antecipamos riscos e dominamos cenários complexos para empresas e indivíduos que exigem resultados incontestáveis e máxima discrição.
+                </p>
+                <div class="flex justify-start md:justify-end">
+                    <a href="https://wa.me/5511965880608?text=Gostaria de solicitar uma análise de viabilidade jurídica." target="_blank" class="btn-brutal px-10 py-5 text-sm font-bold uppercase tracking-widest inline-flex items-center gap-3">
+                        <span>Iniciar Consulta</span>
+                        <i data-lucide="arrow-up-right" class="w-5 h-5 relative z-10"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-6 md:left-12 flex flex-col items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-dark animate-pulse">
+            Scroll
+            <div class="w-px h-12 bg-brand-dark"></div>
+        </div>
+    </section>
+
+    <!-- Marquee Ticker -->
+    <div class="w-full bg-brand-dark text-white py-4 overflow-hidden border-y border-brand-accent-dark">
+        <div class="flex whitespace-nowrap animate-marquee">
+            <div class="text-sm font-bold tracking-[0.3em] uppercase flex items-center gap-8 mx-4 opacity-80">
+                <span>Engenharia Societária</span> <i data-lucide="briefcase" class="w-4 h-4 text-brand-accent"></i>
+                <span>Gestão Patrimonial</span> <i data-lucide="gem" class="w-4 h-4 text-brand-accent"></i>
+                <span>Contencioso Estratégico</span> <i data-lucide="scale" class="w-4 h-4 text-brand-accent"></i>
+                <span>Mitigação de Passivos</span> <i data-lucide="shield" class="w-4 h-4 text-brand-accent"></i>
+                <span>Resolução de Conflitos</span> <i data-lucide="zap" class="w-4 h-4 text-brand-accent"></i>
+            </div>
+            <!-- Duplicado para loop perfeito -->
+            <div class="text-sm font-bold tracking-[0.3em] uppercase flex items-center gap-8 mx-4 opacity-80">
+                <span>Engenharia Societária</span> <i data-lucide="briefcase" class="w-4 h-4 text-brand-accent"></i>
+                <span>Gestão Patrimonial</span> <i data-lucide="gem" class="w-4 h-4 text-brand-accent"></i>
+                <span>Contencioso Estratégico</span> <i data-lucide="scale" class="w-4 h-4 text-brand-accent"></i>
+                <span>Mitigação de Passivos</span> <i data-lucide="shield" class="w-4 h-4 text-brand-accent"></i>
+                <span>Resolução de Conflitos</span> <i data-lucide="zap" class="w-4 h-4 text-brand-accent"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expertise Section: Linhas Modernas e Sóbrias -->
+    <section id="expertise" class="py-32 px-6 md:px-12 bg-brand-light">
+        <div class="max-w-[1400px] mx-auto">
+            <h2 class="text-4xl md:text-6xl font-extrabold uppercase tracking-tight mb-20 reveal-up">Eixos de <br>Atuação</h2>
+
+            <div class="border-t-2 border-brand-dark">
+                
+                <!-- Serviço 1 -->
+                <div class="service-row border-b border-black/10 py-10 px-4 reveal-up cursor-pointer group">
+                    <div class="grid md:grid-cols-12 gap-6 items-center">
+                        <div class="col-span-12 md:col-span-1">
+                            <span class="text-sm font-bold text-gray-400">01</span>
+                        </div>
+                        <div class="col-span-12 md:col-span-4">
+                            <h3 class="text-3xl font-bold uppercase tracking-tight">Societário & Empresarial</h3>
+                        </div>
+                        <div class="col-span-12 md:col-span-6">
+                            <p class="font-medium text-sm md:text-base leading-relaxed opacity-80">
+                                Consultoria institucional de alto nível, estruturação de contratos complexos e blindagem preventiva. Atuamos como o pilar de segurança para a expansão da sua operação.
+                            </p>
+                        </div>
+                        <div class="col-span-12 md:col-span-1 flex justify-end hidden md:flex">
+                            <i data-lucide="arrow-up-right" class="w-8 h-8 service-icon text-brand-accent"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Serviço 2 -->
+                <div class="service-row border-b border-black/10 py-10 px-4 reveal-up cursor-pointer">
+                    <div class="grid md:grid-cols-12 gap-6 items-center">
+                        <div class="col-span-12 md:col-span-1">
+                            <span class="text-sm font-bold text-gray-400">02</span>
+                        </div>
+                        <div class="col-span-12 md:col-span-4">
+                            <h3 class="text-3xl font-bold uppercase tracking-tight">Património & Família</h3>
+                        </div>
+                        <div class="col-span-12 md:col-span-6">
+                            <p class="font-medium text-sm md:text-base leading-relaxed opacity-80">
+                                Gestão patrimonial, divórcios de alta complexidade e sucessões estruturadas. Garantimos a transição e a proteção do seu legado com confidencialidade absoluta.
+                            </p>
+                        </div>
+                        <div class="col-span-12 md:col-span-1 flex justify-end hidden md:flex">
+                            <i data-lucide="arrow-up-right" class="w-8 h-8 service-icon text-brand-accent"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Serviço 3 -->
+                <div class="service-row border-b border-black/10 py-10 px-4 reveal-up cursor-pointer">
+                    <div class="grid md:grid-cols-12 gap-6 items-center">
+                        <div class="col-span-12 md:col-span-1">
+                            <span class="text-sm font-bold text-gray-400">03</span>
+                        </div>
+                        <div class="col-span-12 md:col-span-4">
+                            <h3 class="text-3xl font-bold uppercase tracking-tight">Litígio Estratégico</h3>
+                        </div>
+                        <div class="col-span-12 md:col-span-6">
+                            <p class="font-medium text-sm md:text-base leading-relaxed opacity-80">
+                                Intervenção analítica em contencioso civil, laboral e de consumo. Construímos teses irrefutáveis e defesas robustas focadas na resolução definitiva do conflito.
+                            </p>
+                        </div>
+                        <div class="col-span-12 md:col-span-1 flex justify-end hidden md:flex">
+                            <i data-lucide="arrow-up-right" class="w-8 h-8 service-icon text-brand-accent"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Authority & Reputação -->
+    <section id="reputation" class="py-0 bg-brand-dark text-brand-light">
+        <div class="grid lg:grid-cols-2">
+            <!-- Imagem Stark (Escala de Cinza Profunda) -->
+            <div class="relative h-[500px] lg:h-auto reveal-up">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1000" alt="Equipa em Reunião Estratégica" class="object-cover w-full h-full filter grayscale contrast-125 brightness-50">
+                <div class="absolute inset-0 bg-brand-dark mix-blend-multiply opacity-50"></div>
+                <!-- Box de Estatística -->
+                <div class="absolute bottom-10 right-10 bg-brand-light text-brand-dark p-8 max-w-[250px] shadow-2xl">
+                    <span class="block text-5xl font-extrabold mb-2 text-brand-dark">5.0</span>
+                    <div class="flex text-brand-accent-dark mb-2">
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-wide text-gray-500">Avaliação Máxima de Excelência Institucional</p>
+                </div>
+            </div>
+            
+            <!-- Texto -->
+            <div class="p-12 md:p-24 flex flex-col justify-center reveal-up">
+                <h2 class="text-4xl md:text-5xl font-extrabold uppercase tracking-tight mb-8">A Autoridade da Precisão.</h2>
+                <p class="text-lg font-medium text-gray-400 mb-12">
+                    Sob a liderança do Dr. Gustavo Antunes, o nosso escritório atua através de métodos rigorosamente analíticos e execução impecável. Transformamos a complexidade jurídica numa estrutura de segurança clara e definitiva para os nossos clientes.
+                </p>
+                
+                <div class="space-y-8 border-l-2 border-brand-accent pl-8">
+                    <div>
+                        <p class="text-xl font-bold uppercase text-gray-200">"Uma clareza institucional incomum no mercado."</p>
+                        <p class="text-sm font-medium text-gray-500 mt-2">— Cliente Empresarial</p>
+                    </div>
+                    <div>
+                        <p class="text-xl font-bold uppercase text-gray-200">"Segurança absoluta na gestão do meu processo."</p>
+                        <p class="text-sm font-medium text-gray-500 mt-2">— Cliente Verificado, Contencioso Civil</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-32 px-6 md:px-12 bg-brand-dark text-brand-light text-center border-t border-brand-accent/30 relative overflow-hidden">
+        <!-- Fundo subtil -->
+        <div class="absolute inset-0 z-0 opacity-5" style="background-image: radial-gradient(circle at center, #ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>
+        
+        <div class="max-w-4xl mx-auto reveal-up relative z-10">
+            <h2 class="text-5xl md:text-7xl font-extrabold uppercase tracking-tight mb-8">Decisões Definitivas.</h2>
+            <p class="text-xl md:text-2xl font-medium mb-12 text-gray-400">
+                O rigor processual define o resultado final. Assegure a proteção irrevogável dos seus interesses corporativos e pessoais a partir de hoje.
+            </p>
+            <a href="https://wa.me/5511965880608?text=Gostaria de garantir a segurança jurídica do meu caso." target="_blank" class="btn-brutal-invert inline-block px-12 py-6 text-lg font-bold uppercase tracking-widest">
+                <span>Agendar Alinhamento Estratégico</span>
+            </a>
+            <p class="mt-8 text-sm font-bold tracking-widest uppercase text-gray-500 flex items-center justify-center gap-2">
+                <i data-lucide="lock" class="w-4 h-4"></i> Confidencialidade Institucional Garantida
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer Monocromático -->
+    <footer class="bg-brand-dark text-brand-light pt-20 pb-10 border-t border-brand-accent/30 px-6 md:px-12">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-20">
+                
+                <div class="max-w-sm">
+                    <div class="font-extrabold text-3xl tracking-tighter uppercase flex items-center gap-2 mb-6">
+                        <div class="w-4 h-4 bg-brand-accent"></div>
+                        ANTUNES
+                    </div>
+                    <p class="font-medium text-gray-500 text-sm leading-relaxed">
+                        Advocacia orientada a performance e resultados analíticos. Intervenção estruturada e prevenção de riscos com atuação em São Paulo e âmbito nacional.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-16">
+                    <div>
+                        <h4 class="text-sm font-bold uppercase tracking-widest mb-6 text-brand-light">Contacto Direto</h4>
+                        <ul class="space-y-3 text-sm font-medium text-gray-500">
+                            <li>(11) 96588-0608</li>
+                            <li>Disponibilidade até às 22:30</li>
+                            <li>Parque São Rafael, SP</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold uppercase tracking-widest mb-6 text-brand-light">Estrutura Legal</h4>
+                        <ul class="space-y-3 text-sm font-medium text-gray-500">
+                            <li><a href="#" class="hover:text-brand-light transition-colors">Termos de Responsabilidade</a></li>
+                            <li><a href="#" class="hover:text-brand-light transition-colors">Política de Privacidade</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="pt-8 border-t border-brand-accent/20 flex flex-col md:flex-row justify-between items-center text-xs font-bold uppercase tracking-widest text-gray-600">
+                <p>&copy; 2026 ANTUNES ADVOCACIA. TODOS OS DIREITOS RESERVADOS.</p>
+                <div class="flex items-center gap-2 mt-4 md:mt-0">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> PORTAL INSTITUCIONAL
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Inicializar ícones
+        lucide.createIcons();
+
+        // Header Style no Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-4', 'shadow-sm', 'border-b', 'border-gray-200');
+                navbar.classList.remove('py-6');
+            } else {
+                navbar.classList.add('py-6');
+                navbar.classList.remove('py-4', 'shadow-sm', 'border-b', 'border-gray-200');
+            }
+        });
+
+        // Observer para Animações
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
